@@ -6,4 +6,9 @@
     <resource-bundle>messages.ShardBundle</resource-bundle>
 
     <depends>com.intellij.modules.platform</depends>
+
+    <applicationListeners>
+        <listener class="dev.digamma.shard.ShardActionManager$StartupActivity"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
+    </applicationListeners>
 </idea-plugin>
