@@ -4,6 +4,7 @@ import com.intellij.ide.AppLifecycleListener
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.extensions.PluginId
 import dev.digamma.shard.action.FocusSplitterAction
+import dev.digamma.shard.action.MoveSplitterAction
 import dev.digamma.shard.action.ShardBaseAction
 import org.intellij.lang.annotations.Language
 
@@ -23,6 +24,11 @@ object ShardActionManager {
             registerAction("FocusSplitter.Top", FocusSplitterAction.TOP)
             registerAction("FocusSplitter.Right", FocusSplitterAction.RIGHT)
             registerAction("FocusSplitter.Bottom", FocusSplitterAction.BOTTOM)
+
+            registerAction("MoveSplitter.Left", MoveSplitterAction.LEFT)
+            registerAction("MoveSplitter.Top", MoveSplitterAction.TOP)
+            registerAction("MoveSplitter.Right", MoveSplitterAction.RIGHT)
+            registerAction("MoveSplitter.Bottom", MoveSplitterAction.BOTTOM)
         }
     }
 }

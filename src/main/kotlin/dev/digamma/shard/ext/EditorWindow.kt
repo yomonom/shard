@@ -10,6 +10,9 @@ import java.awt.Point
 val EditorWindow.component
     get() = tabbedPane.component
 
+val EditorWindow.splitter
+    get() = component.parent as? Splitter
+
 fun EditorWindow.getNeighbor(side: Side): EditorWindow? =
     getNearestNeighbor(side)
 
