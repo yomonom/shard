@@ -4,6 +4,8 @@ import com.intellij.openapi.fileEditor.impl.EditorComposite
 import com.intellij.openapi.fileEditor.impl.EditorWindow
 import com.intellij.openapi.fileEditor.impl.EditorWindowHolder
 import com.intellij.openapi.ui.Splitter
+import dev.digamma.shard.ShardFocusManager
+import dev.digamma.shard.ShardSettings
 import dev.digamma.shard.util.Side
 import java.awt.Component
 import java.awt.Point
@@ -16,7 +18,42 @@ val EditorWindow.splitter
     get() = component.parent as? Splitter
 
 fun EditorWindow.getNeighbor(side: Side): EditorWindow? =
-    getNearestNeighbor(side)
+    when (ShardSettings.getState().focusStrategy) {
+        ShardSettings.FocusStrategy.LATEST -> getNeighbors(side).maxByOrNull(ShardFocusManager::getLastFocusTime)
+        ShardSettings.FocusStrategy.NEAREST -> getNearestNeighbor(side)
+    }
+
+fun EditorWindow.getNeighbors(side: Side): Sequence<EditorWindow> {
+    // Find all editor windows to the specified side of the target component
+    fun traverse(target: Component, location: Point): Sequence<EditorWindow> = sequence {
+        if (target.touches(location, component.size, side)) {
+            when (target) {
+                is EditorWindowHolder -> yield(target.editorWindow)
+                is Splitter -> yieldAll(target.children.flatMap {
+                    traverse(it, location - target.location)
+                })
+            }
+        }
+    }
+
+    // Offset the target location by 1 pixel to account for the width of the divider
+    val location = when (side) {
+        Side.LEFT -> Point(-1, 0)
+        Side.TOP -> Point(0, -1)
+        Side.RIGHT -> Point(1, 0)
+        Side.BOTTOM -> Point(0, 1)
+    }
+
+    // Traverse the component hierarchy of the opposite component in each ancestral splitter
+    return component.hierarchy
+        .takeWhile { it.parent != owner }
+        .flatMap { source ->
+            location += source.location
+            (source.parent as? Splitter)
+                ?.getOtherComponent(source)
+                ?.let { traverse(it, location) }.orEmpty()
+        }
+}
 
 fun EditorWindow.getNearestNeighbor(side: Side): EditorWindow? {
     // Shift the target location by 25% to compensate for slight visual offsets
@@ -29,7 +66,7 @@ fun EditorWindow.getNearestNeighbor(side: Side): EditorWindow? {
 
     // Find the first ancestor containing the target location
     var target: Component? = component.hierarchy
-        .takeWhile { it.parent != owner }
+        .takeWhile { it.parent !== owner }
         .firstNotNullOfOrNull { source ->
             location += source.location
             source.parent.takeIf { it.contains(location) }

@@ -7,8 +7,18 @@
 
     <depends>com.intellij.modules.platform</depends>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable id="shard"
+                                 parentId="appearance"
+                                 bundle="messages.ShardBundle"
+                                 key="settings.name"
+                                 instance="dev.digamma.shard.ShardConfigurable"/>
+    </extensions>
+
     <applicationListeners>
         <listener class="dev.digamma.shard.ShardActionManager$StartupActivity"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
+        <listener class="dev.digamma.shard.ShardFocusManager$StartupActivity"
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
 </idea-plugin>
