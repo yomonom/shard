@@ -8,6 +8,7 @@ class ShardSettings : SimplePersistentStateComponent<ShardSettings.State>(State(
     enum class FocusStrategy { LATEST, NEAREST }
 
     class State : BaseState() {
+        var splitOnMove by property(true)
         var focusStrategy by enum(FocusStrategy.LATEST)
     }
 

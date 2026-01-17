@@ -5,6 +5,9 @@ import java.awt.Component
 import java.awt.Dimension
 import java.awt.Point
 
+val Component.ancestors
+    get() = generateSequence(parent) { it.parent }
+
 val Component.hierarchy
     get() = generateSequence(this) { it.parent }
 

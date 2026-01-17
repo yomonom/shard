@@ -3,6 +3,7 @@ package dev.digamma.shard.ext
 import com.intellij.openapi.fileEditor.impl.EditorComposite
 import com.intellij.openapi.fileEditor.impl.EditorWindow
 import com.intellij.openapi.fileEditor.impl.EditorWindowHolder
+import com.intellij.openapi.fileEditor.impl.FileEditorOpenOptions
 import com.intellij.openapi.ui.Splitter
 import dev.digamma.shard.ShardFocusManager
 import dev.digamma.shard.ShardSettings
@@ -75,6 +76,20 @@ fun EditorWindow.getNearestNeighbor(side: Side): EditorWindow? {
     // Traverse all splitters at the target location down to the first editor window
     while (target is Splitter) target = target.getComponentAt(location).also { location -= it.location }
     return (target as? EditorWindowHolder)?.editorWindow
+}
+
+fun EditorWindow.moveComposite(composite: EditorComposite, target: EditorWindow) {
+    closeFile(composite.file, disposeIfNeeded = true, transferFocus = true)
+
+    target.manager.openFile(
+        file = composite.file,
+        window = target,
+        options = FileEditorOpenOptions(
+            pin = composite.isPinned,
+            requestFocus = true,
+            selectAsCurrent = true
+        )
+    )
 }
 
 fun EditorWindow.splitComposite(composite: EditorComposite, side: Side, move: Boolean) {

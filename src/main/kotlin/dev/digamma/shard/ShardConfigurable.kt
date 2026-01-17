@@ -2,6 +2,7 @@ package dev.digamma.shard
 
 import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.ui.dsl.builder.bindItem
+import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.ui.dsl.builder.toNullableProperty
 import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
@@ -14,6 +15,14 @@ class ShardConfigurable :
         get() = ShardSettings.getState()
 
     override fun createPanel() = panel {
+        group(message("settings.group.tabs.title")) {
+            row {
+                checkBox(message("settings.option.splitOnMove.label"))
+                    .comment(message("settings.option.splitOnMove.comment"))
+                    .bindSelected(settings::splitOnMove)
+            }
+        }
+
         group(message("settings.group.splitters.title")) {
             row(message("settings.option.focusStrategy.label")) {
                 comboBox(
