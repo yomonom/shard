@@ -28,6 +28,11 @@ object ShardActionManager {
             registerAction("MoveSplitter.Right", MoveSplitterAction.RIGHT)
             registerAction("MoveSplitter.Bottom", MoveSplitterAction.BOTTOM)
 
+            registerAction("MoveTab.Forward", MoveTabAction.BACKWARD)
+            registerAction("MoveTab.Backward", MoveTabAction.FORWARD)
+            registerAction("MoveTab.Start", MoveTabAction.START)
+            registerAction("MoveTab.End", MoveTabAction.END)
+
             registerAction("MoveTabToSplitter.Left", MoveTabToSplitterAction.LEFT)
             registerAction("MoveTabToSplitter.Top", MoveTabToSplitterAction.TOP)
             registerAction("MoveTabToSplitter.Right", MoveTabToSplitterAction.RIGHT)

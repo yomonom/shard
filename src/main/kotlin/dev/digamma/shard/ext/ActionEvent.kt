@@ -10,6 +10,6 @@ val AnActionEvent.editorWindow
 
 val AnActionEvent.editorTabs
     get() = (getData(JBTabsEx.NAVIGATION_ACTIONS_KEY) as? JBEditorTabs)?.let { tabs ->
-        if (tabs.isNavigatable) tabs
-        else tabs.ancestors.filterIsInstance<JBEditorTabs>().firstOrNull { it.isNavigatable }
+        if (tabs.isNavigable) tabs
+        else tabs.ancestors.filterIsInstance<JBEditorTabs>().firstOrNull { it.isNavigable }
     }

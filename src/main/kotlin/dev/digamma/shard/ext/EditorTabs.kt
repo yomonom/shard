@@ -2,7 +2,8 @@ package dev.digamma.shard.ext
 
 import com.intellij.ui.tabs.impl.JBEditorTabs
 
-val JBEditorTabs.isNavigatable
+@Suppress("UnstableApiUsage")
+val JBEditorTabs.isNavigable
     get() = !isHideTabs && targetInfo?.isHidden == false
 
 val JBEditorTabs.allowsReordering
