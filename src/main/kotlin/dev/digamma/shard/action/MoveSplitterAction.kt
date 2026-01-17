@@ -30,6 +30,7 @@ class MoveSplitterAction(private val side: Side, private val template: Template)
         source.requestFocus(true)
     }
 
+    @Suppress("CompanionObjectInExtension")
     companion object {
         val LEFT = MoveSplitterAction(Side.LEFT, Template("action.move.splitter.left.text"))
         val TOP = MoveSplitterAction(Side.TOP, Template("action.move.splitter.top.text"))

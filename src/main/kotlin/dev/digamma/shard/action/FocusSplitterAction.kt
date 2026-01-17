@@ -19,6 +19,7 @@ class FocusSplitterAction(private val side: Side, template: Template) : ShardBas
         event.editorWindow?.getNeighbor(side)?.requestFocus(true)
     }
 
+    @Suppress("CompanionObjectInExtension")
     companion object {
         val LEFT = FocusSplitterAction(Side.LEFT, Template("action.focus.splitter.left.text"))
         val TOP = FocusSplitterAction(Side.TOP, Template("action.focus.splitter.top.text"))
