@@ -1,8 +1,4 @@
 <idea-plugin>
-    <id>dev.digamma.shard</id>
-    <name>Shard</name>
-    <vendor>Digamma</vendor>
-
     <resource-bundle>messages.ShardBundle</resource-bundle>
 
     <depends>com.intellij.modules.platform</depends>

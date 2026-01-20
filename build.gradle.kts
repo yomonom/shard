@@ -1,10 +1,18 @@
+import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.markdownToHTML
+
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.3.0"
-    id("org.jetbrains.intellij.platform") version "2.10.5"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.intelliJPlatform)
+    alias(libs.plugins.changelog)
 }
 
-group = "dev.digamma"
-version = "1.0-SNAPSHOT"
+group = providers.gradleProperty("plugin.group").get()
+version = providers.gradleProperty("plugin.version").get()
+
+kotlin {
+    jvmToolchain(21)
+}
 
 repositories {
     mavenCentral()
@@ -16,10 +24,55 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        intellijIdea("2025.3.1.1")
+        intellijIdea(providers.gradleProperty("platform.version"))
     }
 }
 
-kotlin {
-    jvmToolchain(21)
+intellijPlatform {
+    pluginConfiguration {
+        id = providers.gradleProperty("plugin.id")
+        name = providers.gradleProperty("plugin.name")
+        version = providers.gradleProperty("plugin.version")
+
+        description = providers.fileContents(layout.projectDirectory.file("DESCRIPTION.md")).asText
+            .map(::markdownToHTML)
+
+        changeNotes = provider {
+            changelog.renderItem(
+                (changelog.getOrNull(version.get()) ?: changelog.getUnreleased())
+                    .withHeader(false)
+                    .withEmptySections(false),
+                Changelog.OutputType.HTML
+            )
+        }
+
+        vendor {
+            name = providers.gradleProperty("plugin.vendor.name")
+        }
+
+        ideaVersion {
+            sinceBuild = providers.gradleProperty("plugin.since.build")
+            untilBuild = provider { null }
+        }
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+    }
+}
+
+tasks {
+    register("getVersion") {
+        val version = providers.gradleProperty("plugin.version")
+
+        doLast {
+            println(version.get())
+        }
+    }
 }
