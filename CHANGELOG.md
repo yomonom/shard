@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.1.0
+
 ### Added
 
 - Setting to prevent pinned tabs from being closed through the default close action.
