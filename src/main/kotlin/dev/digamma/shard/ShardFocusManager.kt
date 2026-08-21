@@ -5,6 +5,7 @@ import com.intellij.openapi.application.WriteIntentReadAction
 import com.intellij.openapi.fileEditor.impl.EditorWindowHolder
 import com.intellij.ui.tabs.impl.JBEditorTabs
 import dev.digamma.shard.ex.hierarchy
+import dev.digamma.shard.ex.targetLabel
 import java.awt.Component
 import java.awt.KeyboardFocusManager
 import java.util.*
@@ -22,8 +23,10 @@ object ShardFocusManager {
         if (component is EditorWindowHolder) trackFocus(component.editorWindow)
         if (component is JBEditorTabs) {
             WriteIntentReadAction.run {
-                val changed = component.targetInfo?.let(component::getTabLabel)?.updateTabActions()
-                if (changed == true) component.revalidateAndRepaint(false)
+                if (component.targetLabel?.updateTabActions() == true) {
+                    component.revalidate()
+                    component.repaint()
+                }
             }
         }
     }
