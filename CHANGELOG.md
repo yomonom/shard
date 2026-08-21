@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Disable the split action if the active editor cannot be split.
+
 ## 1.0.1
 
 ### Changed
