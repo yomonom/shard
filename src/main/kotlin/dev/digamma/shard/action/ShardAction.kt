@@ -36,15 +36,14 @@ abstract class ShardAction(template: Template) : DumbAwareAction() {
         doPerform(event)
     }
 
-    final override fun getActionUpdateThread() = ActionUpdateThread.EDT
+    override fun getActionUpdateThread() = ActionUpdateThread.EDT
+
+    internal val AnActionEvent.editorWindow
+        get() = getData(EditorWindow.DATA_KEY)
+
+    internal val AnActionEvent.editorTabs
+        get() = (getData(JBTabsEx.NAVIGATION_ACTIONS_KEY) as? JBEditorTabs)?.let { tabs ->
+            if (tabs.isNavigable) tabs
+            else tabs.ancestors.filterIsInstance<JBEditorTabs>().firstOrNull { it.isNavigable }
+        }
 }
-
-
-internal val AnActionEvent.editorWindow
-    get() = getData(EditorWindow.DATA_KEY)
-
-internal val AnActionEvent.editorTabs
-    get() = (getData(JBTabsEx.NAVIGATION_ACTIONS_KEY) as? JBEditorTabs)?.let { tabs ->
-        if (tabs.isNavigable) tabs
-        else tabs.ancestors.filterIsInstance<JBEditorTabs>().firstOrNull { it.isNavigable }
-    }

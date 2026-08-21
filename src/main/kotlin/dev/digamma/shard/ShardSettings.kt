@@ -6,8 +6,9 @@ import com.intellij.openapi.components.*
 @State(name = "ShardSettings", category = SettingsCategory.TOOLS, storages = [Storage("shard.xml")])
 class ShardSettings : SimplePersistentStateComponent<ShardSettings.State>(State()) {
     class State : BaseState() {
-        var focusStrategy by enum(FocusStrategy.LATEST)
+        var preventClosingPinnedTabs by property(true)
         var splitOnMove by property(true)
+        var focusStrategy by enum(FocusStrategy.LATEST)
     }
 
     companion object {

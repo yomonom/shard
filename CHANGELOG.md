@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Setting to prevent pinned tabs from being closed through the default close action.
+
 ### Fixed
 
 - Disable the split action if the active editor cannot be split.

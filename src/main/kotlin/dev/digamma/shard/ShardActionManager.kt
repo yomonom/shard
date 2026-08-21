@@ -2,18 +2,23 @@ package dev.digamma.shard
 
 import com.intellij.ide.AppLifecycleListener
 import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.extensions.PluginId
 import dev.digamma.shard.action.*
+import dev.digamma.shard.util.PLUGIN_ID
 import org.intellij.lang.annotations.Language
 
 object ShardActionManager {
+    const val PREFIX = "Shard"
+
+    private val manager
+        get() = ActionManager.getInstance()
+
     private fun registerAction(id: String, action: ShardAction) {
         @Suppress("UnresolvedPluginConfigReference")
-        ActionManager.getInstance().registerAction("Shard.$id", action, PluginId.getId("dev.digamma.shard"))
+        manager.registerAction("$PREFIX.$id", action, PLUGIN_ID)
     }
 
     private fun replaceAction(@Language("devkit-action-id") id: String, action: ShardAction) {
-        ActionManager.getInstance().replaceAction(id, action)
+        manager.replaceAction(id, action)
     }
 
     object StartupActivity : AppLifecycleListener {
@@ -47,6 +52,8 @@ object ShardActionManager {
             registerAction("MoveTabToSplitter.Top", MoveTabToSplitterAction.Top())
             registerAction("MoveTabToSplitter.Right", MoveTabToSplitterAction.Right())
             registerAction("MoveTabToSplitter.Bottom", MoveTabToSplitterAction.Bottom())
+
+            replaceAction("CloseContent", CloseAction())
         }
     }
 }
