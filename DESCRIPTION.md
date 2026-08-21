@@ -9,7 +9,9 @@ Shard adds actions to manage the editor layout without the mouse:
 - **Move splitters** by swapping them with a neighbour.
 - **Move tabs** within a splitter or into a neighbouring one.
 
-When multiple splitters neighbour the active one, Shard picks the target by either recency or distance, configurable in
-`Settings | Tools | Shard`.
+When multiple splitters neighbour the active one, Shard can pick the target by either recency or distance.
 
-No default shortcuts are assigned. Bind them under `Settings | Keymap` by searching for 'Shard'.
+Shard also takes over closing tabs, so **pinned tabs** stay open until they are unpinned.
+
+Everything is configurable in `Settings | Tools | Shard`. Most actions come without a default shortcut — bind them using
+the `Configure Keybinds...` button found there.
