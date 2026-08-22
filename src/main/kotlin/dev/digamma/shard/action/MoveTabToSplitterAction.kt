@@ -2,6 +2,7 @@ package dev.digamma.shard.action
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import dev.digamma.shard.ShardSettings
+import dev.digamma.shard.ex.contextComposite
 import dev.digamma.shard.ex.getNeighbor
 import dev.digamma.shard.ex.moveComposite
 import dev.digamma.shard.ex.splitComposite
@@ -11,7 +12,7 @@ abstract class MoveTabToSplitterAction(private val side: Side, template: Templat
     override fun doUpdate(event: AnActionEvent) =
         event.editorWindow.let {
             when {
-                it?.getSelectedComposite(false) == null -> State.HIDDEN
+                it?.contextComposite == null -> State.HIDDEN
                 it.getNeighbor(side) != null || (ShardSettings.getState().splitOnMove && it.tabCount > 1) -> State.ENABLED
                 else -> State.DISABLED
             }
@@ -21,7 +22,7 @@ abstract class MoveTabToSplitterAction(private val side: Side, template: Templat
         val project = event.project ?: return
 
         event.editorWindow?.run {
-            val composite = getSelectedComposite(false) ?: return
+            val composite = contextComposite ?: return
             val target = getNeighbor(side)
 
             if (target != null) moveComposite(project, composite, target)

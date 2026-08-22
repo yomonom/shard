@@ -1,6 +1,8 @@
 package dev.digamma.shard.action
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import dev.digamma.shard.ex.contextComposite
+import dev.digamma.shard.ex.isSplittable
 import dev.digamma.shard.ex.splitComposite
 import dev.digamma.shard.util.Side
 
@@ -8,17 +10,18 @@ abstract class SplitAction(private val side: Side, private val move: Boolean, te
     ShardAction(template) {
     override fun doUpdate(event: AnActionEvent) =
         event.editorWindow.let {
-            val composite = it?.getSelectedComposite(false)
+            val composite = it?.contextComposite
+
             when {
                 composite == null -> State.HIDDEN
-                !move || it.tabCount > 1 -> State.ENABLED
+                composite.isSplittable && (!move || it.tabCount > 1) -> State.ENABLED
                 else -> State.DISABLED
             }
         }
 
     override fun doPerform(event: AnActionEvent) {
         event.editorWindow?.run {
-            splitComposite(getSelectedComposite(false) ?: return, side, move)
+            splitComposite(contextComposite ?: return, side, move)
         }
     }
 

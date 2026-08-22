@@ -9,6 +9,8 @@
                                  bundle="messages.ShardBundle"
                                  key="settings.name"
                                  instance="dev.digamma.shard.ShardConfigurable"/>
+
+        <keymapExtension implementation="dev.digamma.shard.ShardKeymapExtension"/>
     </extensions>
 
     <applicationListeners>

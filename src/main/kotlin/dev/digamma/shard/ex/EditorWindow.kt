@@ -19,6 +19,9 @@ val EditorWindow.component
 val EditorWindow.splitter
     get() = component.parent as? Splitter
 
+val EditorWindow.contextComposite
+    get() = getSelectedComposite(false)
+
 fun EditorWindow.getNeighbor(side: Side) =
     when (ShardSettings.getState().focusStrategy) {
         ShardSettings.FocusStrategy.LATEST -> getNeighbors(side).maxByOrNull(ShardFocusManager::getLastFocusTime)
